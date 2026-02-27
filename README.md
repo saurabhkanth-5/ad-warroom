@@ -233,7 +233,10 @@ competitor-ad-warroom/
 
 ---
 
-*Built for Mosaic Wellness — Competitor Ad War Room Challenge*#   c o m p e t i t o r - a d - w a r r o o m  
- #   a d - w a r r o o m  
- #   a d - w a r r o o m  
+*Built for Mosaic Wellness — Competitor Ad War Room Challenge*#   c o m p e t i t o r - a d - w a r r o o m 
+ 
+ #   a d - w a r r o o m 
+ 
+ #   a d - w a r r o o m 
+ 
  

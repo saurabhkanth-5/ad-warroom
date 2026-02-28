@@ -150,7 +150,7 @@ async function loadDashboard() {
     const qs = state.selectedBrand ? `?brand_key=${state.selectedBrand}` : '';
     const [statsData, topData] = await Promise.all([
       api('/stats' + qs),
-      api('/ads/top-performers' + (state.selectedBrand ? `?brand_key=${state.selectedBrand}` : '') + '&limit=6')
+      api('/ads/top-performers?limit=12' + (state.selectedBrand ? `&brand_key=${state.selectedBrand}` : ''))
     ]);
 
     state.stats = state.selectedBrand

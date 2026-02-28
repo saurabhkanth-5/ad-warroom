@@ -27,7 +27,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "")
-FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
+
+_base = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(_base, "..", "frontend")
+if not os.path.exists(FRONTEND_DIR):
+    FRONTEND_DIR = os.path.join(_base, "frontend")
+if not os.path.exists(FRONTEND_DIR):
+    FRONTEND_DIR = "/app/frontend"
 
 
 @asynccontextmanager
@@ -204,11 +210,17 @@ def get_top_performers(
     limit: int = Query(20),
     db: Session = Depends(get_db)
 ):
-    """Get long-running top performer ads."""
+    """Get long-running top performer ads. Falls back to longest-running ads if none marked as top performer."""
     q = db.query(AdRecord).filter(AdRecord.is_top_performer == True)
     if brand_key:
         q = q.filter(AdRecord.brand_key == brand_key)
     ads = q.order_by(AdRecord.run_days.desc()).limit(limit).all()
+    # Fallback: if no top performers found, return longest running ads
+    if not ads:
+        q2 = db.query(AdRecord)
+        if brand_key:
+            q2 = q2.filter(AdRecord.brand_key == brand_key)
+        ads = q2.order_by(AdRecord.run_days.desc()).limit(limit).all()
     return {"top_performers": [_ad_to_dict(ad) for ad in ads]}
 
 
